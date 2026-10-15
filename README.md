@@ -157,7 +157,7 @@ Open `backend/.env` in any text editor and paste your Gemini API key:
 ```env
 PORT=3000
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.8-flash
 ```
 *(Note: If you do not have an API key right now, the application will automatically run in **Verified Offline Knowledge Base Mode** without crashing!)*
 
@@ -186,7 +186,7 @@ Open [http://localhost:3000](http://localhost:3000) in your web browser.
 |---|---|---|---|
 | `PORT` | Optional | `3000` | Port for the Express server to listen on. |
 | `GEMINI_API_KEY` | Recommended | `""` | Free API key obtained from [Google AI Studio](https://aistudio.google.com/app/apikey). |
-| `GEMINI_MODEL` | Optional | `gemini-2.5-flash` | Gemini model name (e.g. `gemini-2.5-flash` or `gemini-1.5-flash`). |
+| `GEMINI_MODEL` | Optional | `gemini-3.8-flash` | Gemini model name (e.g. `gemini-3.8-flash`). |
 | `NODE_ENV` | Optional | `development` | Runtime environment (`development` or `production`). |
 
 > **Security Reminder:** Never commit `.env` to GitHub. The `.gitignore` file is already pre-configured to exclude `.env`.
@@ -238,7 +238,7 @@ System status and configuration check.
     "sdg_alignment": "UN SDG 12: Responsible Consumption and Production",
     "ai_service": {
       "provider": "Google Gemini",
-      "model": "gemini-2.5-flash",
+      "model": "gemini-3.8-flash",
       "configured": true
     },
     "canonical_categories": 8,
@@ -360,7 +360,7 @@ EcoSort AI is fully configured for **Vercel Serverless deployment** using [`verc
    * **Output Directory:** *(leave default)*
 5. Under **Environment Variables**, add:
    * `GEMINI_API_KEY`: *(paste your Gemini API key)*
-   * `GEMINI_MODEL`: `gemini-2.5-flash`
+   * `GEMINI_MODEL`: `gemini-3.8-flash`
 6. Click **Deploy**. Vercel will build the serverless functions and host the frontend on high-speed global edge CDNs.
 
 ### Method B: Deploy via Vercel CLI

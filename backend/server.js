@@ -477,9 +477,7 @@ Provide clear, responsible, educational guidance. Emphasize that contamination m
       // Candidate models in preference order
       const candidateModels = Array.from(new Set([
         GEMINI_MODEL,
-        'gemini-2.0-flash',
-        'gemini-1.5-flash',
-        'gemini-2.5-flash'
+        'gemini-3.8-flash'
       ].filter(Boolean)));
 
       let lastError = null;
@@ -488,7 +486,11 @@ Provide clear, responsible, educational guidance. Emphasize that contamination m
 
       for (const modelCandidate of candidateModels) {
         try {
-          const response = await ai.models.generateContent({
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Gemini API call timed out after 6000ms')), 6000)
+          );
+
+          const apiCallPromise = ai.models.generateContent({
             model: modelCandidate,
             contents: prompt,
             config: {
@@ -531,6 +533,8 @@ Provide clear, responsible, educational guidance. Emphasize that contamination m
               }
             }
           });
+
+          const response = await Promise.race([apiCallPromise, timeoutPromise]);
 
           if (response && response.text) {
             responseText = response.text.trim();
