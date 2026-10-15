@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EcoSort AI is an AI-powered waste classification and recycling assistant helping households sort waste responsibly in alignment with UN SDG 12.">
+  <meta name="theme-color" content="#10b981">
+  <title>EcoSort AI — AI-Powered Waste Classification & Recycling Assistant</title>
+  
+  <!-- Modern Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <aside class="announcement-bar" role="complementary">
+    <div class="container announcement-content">
+      <span class="badge badge-subtle">IBM SkillsBuild</span>
+      <span>Masterclass 5 Academic Project • Aligned with <strong>UN SDG 12: Responsible Consumption and Production</strong></span>
+      <span id="aiStatusPill" class="status-pill status-checking" title="Checking AI backend connection">
+        <span class="status-dot"></span> <span id="aiStatusText">Connecting...</span>
+      </span>
+    </div>
+  </aside>
+
+  <!-- Navigation Bar -->
+  <header class="navbar" id="topNav">
+    <div class="container nav-container">
+      <a href="#hero" class="nav-brand" aria-label="EcoSort AI Home">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">EcoSort <span class="brand-accent">AI</span></span>
+          <span class="brand-tagline">Recycling Assistant</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" id="navMenu" aria-label="Main Navigation">
+        <a href="#classify" class="nav-link">Classify</a>
+        <a href="#howItWorks" class="nav-link">How It Works</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#dashboard" class="nav-link">Dashboard</a>
+        <a href="#tips" class="nav-link">Recycling Tips</a>
+        <a href="#sdg12" class="nav-link">SDG 12</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="btn-icon" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <span class="theme-icon-light" aria-hidden="true">☀️</span>
+          <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+        </button>
+        <a href="#classify" class="btn btn-primary btn-sm">Try Classifier</a>
+        <button id="mobileMenuBtn" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="mainContent">
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="hero-glow-1"></div>
+      <div class="hero-glow-2"></div>
+      
+      <div class="container hero-container">
+        <div class="hero-badge-group">
+          <span class="hero-pill">
+            <span class="sparkle-icon">✨</span> Powered by Google Gemini & Verified Knowledge Base
+          </span>
+        </div>
+
+        <h1 class="hero-title">
+          Sort Waste Responsibly.<br>
+          <span class="gradient-text">Protect Our Planet with AI.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Over 2 billion tons of municipal solid waste are dumped annually. Improper sorting contaminates entire recycling streams. EcoSort AI gives you instant, practical, and color-coded disposal guidance for any household item.
+        </p>
+
+        <!-- Main Classifier Search Box -->
+        <div class="classifier-card" id="classify">
+          <div class="classifier-header">
+            <span class="classifier-label">Enter any household item, packaging, or scrap:</span>
+          </div>
+
+          <form id="classifyForm" class="classifier-form" novalidate>
+            <div class="input-wrapper">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input 
+                type="text" 
+                id="wasteItemInput" 
+                class="classifier-input" 
+                placeholder="e.g. Plastic water bottle, banana peel, lithium battery, pizza box..." 
+                autocomplete="off"
+                maxlength="120"
+                required
+                aria-describedby="inputHint inputError"
+              />
+              <button type="button" id="clearInputBtn" class="clear-btn" aria-label="Clear input" style="display: none;">✕</button>
+            </div>
+
+            <button type="submit" id="classifyBtn" class="btn btn-primary btn-lg classify-submit-btn">
+              <span class="btn-spinner" id="btnSpinner" aria-hidden="true"></span>
+              <span class="btn-icon-sparkle" aria-hidden="true">✨</span>
+              <span id="btnText">Classify Waste</span>
+            </button>
+          </form>
+
+          <!-- Input Validation / Error Notification -->
+          <div id="inputError" class="input-error" role="alert" style="display: none;"></div>
+
+          <!-- Quick Suggestion Chips -->
+          <div class="quick-chips">
+            <span class="chips-label">Popular items:</span>
+            <div class="chips-list" id="quickChipsList">
+              <button type="button" class="chip" data-item="Plastic water bottle">🧴 Plastic Bottle</button>
+              <button type="button" class="chip" data-item="Banana peel">🍌 Banana Peel</button>
+              <button type="button" class="chip" data-item="Cardboard shipping box">📦 Cardboard Box</button>
+              <button type="button" class="chip" data-item="Aluminum soda can">🥫 Soda Can</button>
+              <button type="button" class="chip" data-item="Glass pasta sauce jar">🍾 Glass Jar</button>
+              <button type="button" class="chip" data-item="Lithium rechargeable battery">🔋 Used Battery</button>
+              <button type="button" class="chip" data-item="Greasy pizza box">🍕 Greasy Pizza Box</button>
+              <button type="button" class="chip" data-item="Old smartphone">📱 Old Phone</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Display Area -->
+        <section id="resultSection" class="result-section" aria-live="polite" style="display: none;">
+          <!-- Content dynamically rendered by script.js -->
+        </section>
+
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section section-alt" id="howItWorks">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge badge-accent">Workflow</span>
+          <h2 class="section-title">How EcoSort AI Works</h2>
+          <p class="section-subtitle">Three easy steps from uncertainty to eco-conscious waste disposal.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <div class="step-icon-wrapper">
+              <span class="step-icon">🔎</span>
+            </div>
+            <h3 class="step-title">Enter Any Item</h3>
+            <p class="step-desc">Type in any daily product, food leftover, delivery carton, electronic accessory, or chemical container.</p>
+          </div>
+
+          <div class="step-arrow" aria-hidden="true">→</div>
+
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <div class="step-icon-wrapper">
+              <span class="step-icon">🤖</span>
+            </div>
+            <h3 class="step-title">AI & Material Analysis</h3>
+            <p class="step-desc">Google Gemini and our verified knowledge base analyze material composition, degradation profile, and safety hazards.</p>
+          </div>
+
+          <div class="step-arrow" aria-hidden="true">→</div>
+
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <div class="step-icon-wrapper">
+              <span class="step-icon">♻️</span>
+            </div>
+            <h3 class="step-title">Actionable Disposal</h3>
+            <p class="step-desc">Receive precise bin colors, rinsing procedures, creative upcycling ideas, and crucial municipal precaution advice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Waste Categories Section (8 Canonical Categories) -->
+    <section class="section" id="categories">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge badge-accent">Classification Standards</span>
+          <h2 class="section-title">Explore Waste Categories</h2>
+          <p class="section-subtitle">Understanding the 8 core waste streams prevents recycling contamination and protects sanitation teams.</p>
+        </div>
+
+        <div class="categories-grid" id="categoriesGrid">
+          <!-- Dynamically populated or static cards -->
+          <article class="category-card" data-category="Wet or Organic Waste" style="--cat-color: #10b981;">
+            <div class="category-card-header">
+              <span class="category-icon">🌱</span>
+              <span class="category-bin-badge">Green Bin</span>
+            </div>
+            <h3 class="category-title">Wet / Organic Waste</h3>
+            <p class="category-desc">Kitchen scraps, fruit and vegetable peels, coffee grounds, and garden trimmings that decompose naturally.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Fruit peels, tea bags, egg shells, vegetable cut-offs
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Fruit and vegetable scraps">Test with Organic Item →</button>
+          </article>
+
+          <article class="category-card" data-category="Recyclable Paper and Cardboard" style="--cat-color: #3b82f6;">
+            <div class="category-card-header">
+              <span class="category-icon">📦</span>
+              <span class="category-bin-badge">Blue Bin</span>
+            </div>
+            <h3 class="category-title">Paper & Cardboard</h3>
+            <p class="category-desc">Clean, dry paper, corrugated shipping boxes, newspapers, and unsoiled office cartons.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Shipping boxes, newspapers, magazines, notebooks
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Cardboard box">Test with Paper Item →</button>
+          </article>
+
+          <article class="category-card" data-category="Plastic Waste" style="--cat-color: #f59e0b;">
+            <div class="category-card-header">
+              <span class="category-icon">🧴</span>
+              <span class="category-bin-badge">Yellow Bin</span>
+            </div>
+            <h3 class="category-title">Plastic Waste</h3>
+            <p class="category-desc">Rigid plastics like PET bottles (#1) and HDPE jugs (#2). Clean, rinse, and crush before disposal.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Water bottles, shampoo jugs, plastic food tubs
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Plastic shampoo bottle">Test with Plastic Item →</button>
+          </article>
+
+          <article class="category-card" data-category="Glass Waste" style="--cat-color: #06b6d4;">
+            <div class="category-card-header">
+              <span class="category-icon">🍾</span>
+              <span class="category-bin-badge">Cyan Bin</span>
+            </div>
+            <h3 class="category-title">Glass Waste</h3>
+            <p class="category-desc">Container glass is 100% infinitely recyclable. Remove metal or plastic lids and rinse out remnants.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Sauce jars, beverage bottles, olive oil containers
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Glass sauce jar">Test with Glass Item →</button>
+          </article>
+
+          <article class="category-card" data-category="Metal Waste" style="--cat-color: #64748b;">
+            <div class="category-card-header">
+              <span class="category-icon">🥫</span>
+              <span class="category-bin-badge">Grey Bin</span>
+            </div>
+            <h3 class="category-title">Metal Waste</h3>
+            <p class="category-desc">Aluminum beverage cans, steel food tins, clean foil trays, and metal bottle lids.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Soda cans, tomato paste tins, clean foil
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Aluminum beverage can">Test with Metal Item →</button>
+          </article>
+
+          <article class="category-card" data-category="Electronic Waste (E-Waste)" style="--cat-color: #8b5cf6;">
+            <div class="category-card-header">
+              <span class="category-icon">📱</span>
+              <span class="category-bin-badge">Purple Bin</span>
+            </div>
+            <h3 class="category-title">Electronic Waste (E-Waste)</h3>
+            <p class="category-desc">Contains recoverable precious metals (gold, copper) alongside heavy metals. Never mix in household bins.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Old phones, chargers, computer cables, tablets
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Broken phone charger">Test with E-Waste Item →</button>
+          </article>
+
+          <article class="category-card" data-category="General or Non-Recyclable Waste" style="--cat-color: #71717a;">
+            <div class="category-card-header">
+              <span class="category-icon">🗑️</span>
+              <span class="category-bin-badge">Black Bin</span>
+            </div>
+            <h3 class="category-title">General / Non-Recyclable</h3>
+            <p class="category-desc">Materials contaminated by food oils, composites, multi-layer foil chip wrappers, or non-recyclable ceramics.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Greasy pizza boxes, potato chip packets, styrofoam
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Potato chips packet">Test with General Item →</button>
+          </article>
+
+          <article class="category-card" data-category="Hazardous or Special-Handling Waste" style="--cat-color: #ef4444;">
+            <div class="category-card-header">
+              <span class="category-icon">⚠️</span>
+              <span class="category-bin-badge">Red Bin</span>
+            </div>
+            <h3 class="category-title">Hazardous / Special</h3>
+            <p class="category-desc">Batteries, solvents, paints, and flammables that risk groundwater contamination and truck fires.</p>
+            <div class="category-examples">
+              <strong>Examples:</strong> Lithium batteries, paint cans, chemical solvents, fluorescent tubes
+            </div>
+            <button type="button" class="btn-text explore-cat-btn" data-query="Household battery">Test with Hazardous Item →</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- User Dashboard & Local History Section -->
+    <section class="section section-alt" id="dashboard">
+      <div class="container">
+        <div class="section-header-flex">
+          <div>
+            <span class="badge badge-accent">Local Activity</span>
+            <h2 class="section-title">Your Classification Dashboard</h2>
+            <p class="section-subtitle">Real statistics based on classifications performed in your current browser session.</p>
+          </div>
+          <div class="dashboard-actions">
+            <button id="clearHistoryBtn" class="btn btn-outline-danger btn-sm" title="Clear all local classification history">
+              🗑️ Clear History
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-details">
+              <span class="stat-value" id="statTotalItems">0</span>
+              <span class="stat-label">Items Classified</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🗂️</div>
+            <div class="stat-details">
+              <span class="stat-value" id="statCategoriesCount">0 / 8</span>
+              <span class="stat-label">Categories Discovered</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-details">
+              <span class="stat-value" id="statTopCategory">None</span>
+              <span class="stat-label">Most Frequent Category</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🔒</div>
+            <div class="stat-details">
+              <span class="stat-value">100%</span>
+              <span class="stat-label">Private (localStorage)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Table / Feed -->
+        <div class="history-container">
+          <div class="history-header">
+            <h3 class="history-title">Recent Classifications</h3>
+            <span class="history-badge" id="historyCounter">0 items saved</span>
+          </div>
+
+          <div id="historyList" class="history-list">
+            <!-- Populated by script.js -->
+            <div class="history-empty-state" id="historyEmptyState">
+              <span class="empty-icon">🍃</span>
+              <h4>No items classified yet</h4>
+              <p>Type any household item above or click one of the popular suggestion chips to see your history and stats appear here.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Educational Recycling Tips Section -->
+    <section class="section" id="tips">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge badge-accent">Practical Knowledge</span>
+          <h2 class="section-title">Essential Recycling Guidelines</h2>
+          <p class="section-subtitle">Avoid "wishcycling" — putting items in recycling hoping they get recycled. Follow these 6 proven rules.</p>
+        </div>
+
+        <div class="tips-grid">
+          <article class="tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-number">1</span>
+              <span class="tip-icon">💧</span>
+            </div>
+            <h3 class="tip-title">Clean & Dry Before Tossing</h3>
+            <p class="tip-desc">Food residues, sauces, and liquids ruin paper fibers and contaminate plastic batches. Give containers a quick scrape or light rinse and let them dry.</p>
+          </article>
+
+          <article class="tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-number">2</span>
+              <span class="tip-icon">🍕</span>
+            </div>
+            <h3 class="tip-title">The Greasy Box Rule</h3>
+            <p class="tip-desc">Grease from pizzas or takeout cannot be separated from paper during the water-based pulping process. Tear off the clean lid to recycle, and put greasy bottoms in general waste or compost.</p>
+          </article>
+
+          <article class="tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-number">3</span>
+              <span class="tip-icon">🔋</span>
+            </div>
+            <h3 class="tip-title">Never Bin Batteries</h3>
+            <p class="tip-desc">Lithium and alkaline batteries can ignite garbage trucks and sorting plants when compacted. Always drop them off at dedicated battery collection points or supermarket return kiosks.</p>
+          </article>
+
+          <article class="tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-number">4</span>
+              <span class="tip-icon">🏷️</span>
+            </div>
+            <h3 class="tip-title">Look for Resin Codes (1–7)</h3>
+            <p class="tip-desc">Check the triangular chasing arrows with a number inside. Numbers 1 (PET) and 2 (HDPE) are widely recycled almost everywhere, while numbers 3–7 often require specialized facilities.</p>
+          </article>
+
+          <article class="tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-number">5</span>
+              <span class="tip-icon">🔌</span>
+            </div>
+            <h3 class="tip-title">E-Waste Contains Treasures</h3>
+            <p class="tip-desc">Old cables, cracked phones, and dead laptops contain precious copper, silver, and rare earths. Taking them to certified e-waste drives prevents hazardous heavy metals from polluting groundwater.</p>
+          </article>
+
+          <article class="tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-number">6</span>
+              <span class="tip-icon">📦</span>
+            </div>
+            <h3 class="tip-title">Flatten All Cardboard</h3>
+            <p class="tip-desc">Leaving boxes unflattened wastes up to 70% of collection bin space, causing overflow and unnecessary collection truck trips. Break down and flatten every shipping box.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- UN SDG 12 Alignment Section -->
+    <section class="section section-alt" id="sdg12">
+      <div class="container">
+        <div class="sdg-card">
+          <div class="sdg-badge-wrapper">
+            <div class="sdg-logo-box">
+              <span class="sdg-number">12</span>
+              <span class="sdg-goal-text">RESPONSIBLE CONSUMPTION & PRODUCTION</span>
+            </div>
+          </div>
+          <div class="sdg-content">
+            <span class="badge badge-accent">Global Goals Alignment</span>
+            <h2 class="sdg-title">Supporting UN Sustainable Development Goal 12</h2>
+            <p class="sdg-description">
+              Target 12.5 mandates that by 2030, nations must substantially reduce waste generation through prevention, reduction, recycling, and reuse. 
+              EcoSort AI provides accessible digital guidance to close the knowledge gap between consumer intent and correct municipal waste disposal.
+            </p>
+            <div class="sdg-highlights">
+              <div class="sdg-highlight-item">
+                <span class="highlight-check">✓</span>
+                <div>
+                  <strong>Target 12.5: Waste Reduction</strong>
+                  <p>Minimizing landfill volumes by empowering households with actionable sorting intelligence.</p>
+                </div>
+              </div>
+              <div class="sdg-highlight-item">
+                <span class="highlight-check">✓</span>
+                <div>
+                  <strong>Target 12.8: Universal Sustainability Awareness</strong>
+                  <p>Ensuring citizens have the relevant information and awareness for sustainable lifestyles in harmony with nature.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Clear History Confirmation Native Modal Dialog -->
+  <dialog id="clearHistoryDialog" class="modal-dialog">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <span class="dialog-icon">⚠️</span>
+        <h3 class="dialog-title">Clear Classification History?</h3>
+      </div>
+      <p class="dialog-body">
+        This will delete all saved classifications and reset your session statistics. This action only affects your local browser storage and cannot be undone.
+      </p>
+      <div class="dialog-actions">
+        <button id="cancelClearBtn" class="btn btn-secondary">Cancel</button>
+        <button id="confirmClearBtn" class="btn btn-danger">Yes, Clear History</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-col footer-col-brand">
+        <div class="footer-brand">
+          <span class="brand-title">EcoSort <span class="brand-accent">AI</span></span>
+        </div>
+        <p class="footer-tagline">
+          AI-Powered Waste Classification & Responsible Disposal Assistant. Built as an academic project for IBM SkillsBuild Masterclass 5.
+        </p>
+        <div class="footer-sdg-tag">
+          🌱 Aligned with UN Sustainable Development Goal 12
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Classifier Home</a></li>
+          <li><a href="#howItWorks">How It Works</a></li>
+          <li><a href="#categories">Waste Categories</a></li>
+          <li><a href="#dashboard">Activity Dashboard</a></li>
+          <li><a href="#tips">Recycling Guidelines</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Academic Deliverables</h4>
+        <ul class="footer-links">
+          <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">docs/lean-canvas.md</a></li>
+          <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">docs/concept-note.md</a></li>
+          <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">docs/presentation-outline.md</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Privacy & Disclaimer</h4>
+        <p class="footer-disclaimer-text">
+          <strong>Educational Guidance Only:</strong> EcoSort AI is an educational guidance tool, not an official waste collection or hazardous disposal authority. Local municipal regulations always take precedence.
+        </p>
+        <p class="footer-privacy-text">
+          <strong>Data Privacy:</strong> All search history is stored strictly in your browser's <code>localStorage</code>. No personal identification data is ever collected or tracked.
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© 2026 EcoSort AI Project Team • IBM SkillsBuild Masterclass 5 • Distributed under MIT License</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

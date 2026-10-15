@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSort AI — Presentation Slides (IBM SkillsBuild Masterclass 5)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-light: #10b981;
+      --bg-dark: #090e17;
+      --bg-card: #111827;
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .slide-deck {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+    .slide {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3.5rem;
+      position: relative;
+      min-height: 540px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      page-break-after: always;
+    }
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      width: fit-content;
+      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .slide-number {
+      position: absolute;
+      top: 2rem;
+      right: 2.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    .slide-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .slide-body {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      flex: 1;
+    }
+    .slide-body ul {
+      margin-left: 1.5rem;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .slide-body li strong {
+      color: #ffffff;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .stat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .stat-box h4 {
+      color: var(--primary-light);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-box p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .slide-footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .nav-floating {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      gap: 0.75rem;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+    .nav-floating button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+    @media print {
+      body { background: white; color: black; padding: 0; }
+      .slide { background: white; color: black; border: 1px solid #ccc; box-shadow: none; min-height: auto; page-break-after: always; }
+      .slide-title { color: black; }
+      .gradient-text { color: #059669; -webkit-text-fill-color: initial; background: none; }
+      .slide-body { color: #333; }
+      .slide-body li strong { color: black; }
+      .nav-floating { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-floating">
+    <button onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+
+  <div class="slide-deck">
+
+    <!-- Slide 1 -->
+    <section class="slide" id="slide1">
+      <span class="slide-badge">IBM SkillsBuild Masterclass 5 • Capstone Project</span>
+      <span class="slide-number">Slide 01 / 08</span>
+      <h1 class="slide-title">EcoSort <span class="gradient-text">AI</span></h1>
+      <div class="slide-body">
+        <p style="font-size: 1.4rem; color: #e2e8f0; margin-bottom: 1.5rem;">
+          <strong>AI-Powered Waste Classification & Recycling Assistant</strong>
+        </p>
+        <p style="margin-bottom: 2rem;">
+          Empowering households to eliminate sorting confusion, prevent recycling contamination, and practice responsible consumption aligned with <strong>UN Sustainable Development Goal 12</strong>.
+        </p>
+        <div class="grid-2">
+          <div class="stat-box">
+            <h4>Technology Stack</h4>
+            <p>HTML5, CSS3, Vanilla JS, Node.js, Express.js, Google Gemini API, localStorage</p>
+          </div>
+          <div class="stat-box">
+            <h4>Domain Focus</h4>
+            <p>Environmental Intelligence, Source Waste Segregation, Circular Economy</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>EcoSort AI Development Team</span>
+        <span>October 2026</span>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide" id="slide2">
+      <span class="slide-badge">Problem Statement</span>
+      <span class="slide-number">Slide 02 / 08</span>
+      <h2 class="slide-title">The Household Waste Dilemma & <span class="gradient-text">"Wishcycling"</span></h2>
+      <div class="slide-body">
+        <ul>
+          <li><strong>2.24+ Billion Tonnes Generated Annually:</strong> Global municipal solid waste continues to surge, overwhelming landfill capacity worldwide.</li>
+          <li><strong>The "Wishcycling" Disaster:</strong> Well-meaning citizens throw greasy pizza boxes, broken drinking glasses, or metallized chip bags into recycling bins. A single greasy carton can contaminate an entire pulping batch, diverting tons of paper to landfills.</li>
+          <li><strong>Severe Hazardous Threats:</strong> Household lithium-ion batteries and toxic chemicals tossed in household bins ignite garbage collection trucks and leach heavy metals into groundwater.</li>
+          <li><strong>Information Inaccessibility:</strong> Long municipal PDF brochures fail to deliver answers in the 3 seconds consumers take to discard items.</li>
+        </ul>
+      </div>
+      <div class="slide-footer">
+        <span>Source: World Bank What a Waste 2.0 & UNEP</span>
+        <span>Problem Identification</span>
+      </div>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide" id="slide3">
+      <span class="slide-badge">Target Audience</span>
+      <span class="slide-number">Slide 03 / 08</span>
+      <h2 class="slide-title">Who Benefits From <span class="gradient-text">EcoSort AI</span>?</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="stat-box">
+            <h4>1. Urban Households & Families</h4>
+            <p>Citizens preparing meals and disposing packaging daily. Need instant clarity on rinsing, bin colors, and plastic resin codes without installing heavy apps or signing up.</p>
+          </div>
+          <div class="stat-box">
+            <h4>2. University Campuses & Students</h4>
+            <p>Students living in shared dormitories and campus eco-clubs seeking practical, zero-friction guidance for cafeteria and dorm waste sorting.</p>
+          </div>
+          <div class="stat-box">
+            <h4>3. Civic Environmental Volunteers</h4>
+            <p>Eco-champions conducting community workshops who need a reliable, interactive reference tool to train citizens on waste separation.</p>
+          </div>
+          <div class="stat-box">
+            <h4>4. Small Businesses & Co-working Hubs</h4>
+            <p>Offices aiming to reduce contamination fines and improve sustainability compliance in shared kitchenettes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Zero-Friction Access Model</span>
+        <span>User Personas</span>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide" id="slide4">
+      <span class="slide-badge">AI Architecture</span>
+      <span class="slide-number">Slide 04 / 08</span>
+      <h2 class="slide-title">Proposed AI Solution & <span class="gradient-text">Dual-Engine Design</span></h2>
+      <div class="slide-body">
+        <ul>
+          <li><strong>Live Gemini Intelligence:</strong> Express backend securely interfaces with Google Gemini (<code>@google/genai</code>) using structured JSON schemas enforcing consistent, typed fields.</li>
+          <li><strong>Resilient Offline Knowledge Base:</strong> If API credentials are absent or cloud services are unreachable, seamlessly matches against a curated reference database of 40+ verified items.</li>
+          <li><strong>Transparent Provenance Tagging:</strong> Clearly distinguishes live AI classifications from offline reference results, maintaining academic honesty.</li>
+          <li><strong>Privacy-First Edge Persistence:</strong> Search history and metrics stored strictly in the client's <code>localStorage</code>—zero database tracking or data harvesting.</li>
+        </ul>
+      </div>
+      <div class="slide-footer">
+        <span>Security: Zero API Key Exposure to Browser</span>
+        <span>Architecture Overview</span>
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide" id="slide5">
+      <span class="slide-badge">Core Features</span>
+      <span class="slide-number">Slide 05 / 08</span>
+      <h2 class="slide-title">Key Features & <span class="gradient-text">User Workflow</span></h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="stat-box">
+            <h4>8 Canonical Categories</h4>
+            <p>Organic, Paper & Cardboard, Plastic, Glass, Metal, E-Waste, General Waste, and Hazardous Waste with distinct bin colors.</p>
+          </div>
+          <div class="stat-box">
+            <h4>Complete Actionable Card</h4>
+            <p>Material breakdown, step-by-step disposal procedures, creative upcycling ideas, and safety precautions.</p>
+          </div>
+          <div class="stat-box">
+            <h4>Real Activity Dashboard</h4>
+            <p>Computes live session metrics: total items classified, category diversity, and most frequent waste type.</p>
+          </div>
+          <div class="stat-box">
+            <h4>Educational Recycling Tips</h4>
+            <p>6 practical rules addressing the clean-and-dry principle, pizza box grease, battery safety, and resin codes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Desktop, Tablet & Mobile Responsive</span>
+        <span>Feature Suite</span>
+      </div>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide" id="slide6">
+      <span class="slide-badge">Business Viability</span>
+      <span class="slide-number">Slide 06 / 08</span>
+      <h2 class="slide-title">Lean Canvas & <span class="gradient-text">Sustainability Model</span></h2>
+      <div class="slide-body">
+        <ul>
+          <li><strong>Unique Value Proposition:</strong> Instant, honest waste guidance bridging consumer intent with actual municipal recycling recovery.</li>
+          <li><strong>Unfair Advantage:</strong> Zero login friction, client-edge privacy, and dual-engine fallback that never crashes when cloud APIs are unavailable.</li>
+          <li><strong>Ultra-Lean Cost Structure:</strong> $0 database overhead, minimal server resource usage, free-tier cloud hosting on Render.</li>
+          <li><strong>Revenue & Viability:</strong> Open-access educational tool with potential for university white-label licensing, CSR sponsorship grants, and municipal partnerships.</li>
+        </ul>
+      </div>
+      <div class="slide-footer">
+        <span>Comprehensive 9-Block Academic Canvas</span>
+        <span>Feasibility & Model</span>
+      </div>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide" id="slide7">
+      <span class="slide-badge">UN SDG 12 Alignment</span>
+      <span class="slide-number">Slide 07 / 08</span>
+      <h2 class="slide-title">Engineering Discipline & <span class="gradient-text">SDG 12 Impact</span></h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="stat-box">
+            <h4>UN Target 12.5: Waste Reduction</h4>
+            <p>Prevents recycling batch contamination at the kitchen level, reducing landfill diversion and maximizing material recovery rates.</p>
+          </div>
+          <div class="stat-box">
+            <h4>UN Target 12.8: Universal Awareness</h4>
+            <p>Informs citizens on plastic resin numbers (1-7), battery compaction fire hazards, and responsible urban mining of e-waste.</p>
+          </div>
+        </div>
+        <ul style="margin-top: 1.5rem;">
+          <li><strong>Rigorous Testing:</strong> 71 automated test assertions covering input boundaries, health checks, rate limits, and category mappings.</li>
+          <li><strong>Academic Honesty:</strong> Genuine localStorage statistics without fabricated carbon emission or tree-saving claims.</li>
+        </ul>
+      </div>
+      <div class="slide-footer">
+        <span>Verified Automated Testing Suite</span>
+        <span>Sustainability & Ethics</span>
+      </div>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide" id="slide8">
+      <span class="slide-badge">Conclusion & Demo</span>
+      <span class="slide-number">Slide 08 / 08</span>
+      <h2 class="slide-title">Live Demonstration & <span class="gradient-text">Future Scope</span></h2>
+      <div class="slide-body">
+        <p style="margin-bottom: 1.25rem;">
+          <strong>Live System Walkthrough:</strong>
+        </p>
+        <ul>
+          <li><strong>Test 1:</strong> "Plastic water bottle" -> Yellow bin, rinse & crush instruction.</li>
+          <li><strong>Test 2:</strong> "Lithium battery" -> Red hazardous alert & drop-off depot guidance.</li>
+          <li><strong>Test 3:</strong> "Greasy pizza box" -> Food oil contamination explanation & tear-lid advice.</li>
+          <li><strong>Test 4:</strong> Activity Dashboard & Session History with native modal confirmation.</li>
+        </ul>
+        <p style="margin-top: 1.5rem; color: #a7f3d0;">
+          <strong>Future Roadmap:</strong> Mobile camera visual recognition, municipal GIS bin integration, and product barcode UPC scanning.
+        </p>
+      </div>
+      <div class="slide-footer">
+        <span>EcoSort AI • IBM SkillsBuild Masterclass 5</span>
+        <span>Questions & Answers</span>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
